@@ -6,7 +6,6 @@
 /smart-contract/coverage
 /smart-contract/coverage.json
 /smart-contract/typechain
-/smart-contract/hardhat.config.js
 
 #Hardhat files
 /smart-contract/cache
