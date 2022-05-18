@@ -6,7 +6,7 @@ import abi from "./utils/WavePortal.json";
 export default function App() {
 
   const [currentAccount, setCurrentAccount] = useState("");   // State variable to store user's public wallet
-  const contractAddress = "0x50DFebAa71f2447dF3c859fE328757afCb13D9CD";   // The smart contract's address
+  const contractAddress = "0x7aF80b2215e6a8fE8682141f06fBCB24B645453b";   // The smart contract's address
   const contractABI = abi.abi;    // reference to the smart contract's abi
   const [isMining, setIsMining] = useState(false);
   const [totalWavesCount, setTotalWavesCount] = useState(0);  // State variable to store total waves
