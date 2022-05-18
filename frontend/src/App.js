@@ -82,7 +82,6 @@ export default function App() {
         console.log("Mined --", waveTxn.hash);
 
         getTotalWaves();
-        getAllWaves();
       } else {
         console.log("Ethereum object does not exist!");
       }
