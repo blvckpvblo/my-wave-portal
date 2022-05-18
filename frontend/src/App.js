@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
+import abi from "./utils/WavePortal.json";
 
 export default function App() {
 
   const [currentAccount, setCurrentAccount] = useState("");   // State variable to store user's public wallet
+  const contractAddress = "0x3eF4a7180A8a4760EeaB449618FCC676f54dc079";   // The smart contract's address
+  const contractABI = abi.abi;    // reference to the smart contract's abi
+  const [isMining, setIsMining] = useState(false);
+  const [totalWavesCount, setTotalWavesCount] = useState(0);  // State variable to store total waves
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -54,15 +59,59 @@ export default function App() {
     }
   };
 
-  const wave = () => {
+  const wave = async () => {
+    try {
+      const { ethereum } = window;
 
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        /**
+         * Execute wave function in the contract
+         */
+        const waveTxn = await wavePortalContract.wave();
+        setIsMining(true);
+        console.log("Mining...", waveTxn.hash);
+
+        await waveTxn.wait()
+        setIsMining(false);
+        console.log("Mined --", waveTxn.hash);
+
+        getTotalWaves();
+      } else {
+        console.log("Ethereum object does not exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  const getTotalWaves = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const wavePortalContract = new ethers.Contract(contractAddress, contractABI,signer);
+
+        let count = await wavePortalContract.getTotalWaves();
+        console.log("Retrieved total wave count...", count.toNumber());
+        setTotalWavesCount(count.toNumber());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /**
    * Runs when the page loads
    */
   useEffect(() => {
     checkIfWalletIsConnected();
+    getTotalWaves();
   }, []);
 
   return (
@@ -74,11 +123,16 @@ export default function App() {
         </div>
 
         <div className="bio">
-          I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+          I am "𝓜𝓸𝓶𝓪𝓻 🌈☀️" and I am a techno-industrialist. Connect your Ethereum wallet and wave at me!
         </div>
 
+        <h1 style={{textAlign: 'center'}}>
+          # of Waves: {totalWavesCount}
+        </h1>
+
         <button className="waveButton" onClick={wave}>
-          Wave at Me
+          {!isMining && (<span>Wave at Me</span>)}
+          {isMining && (<span>Mining...</span>)}
         </button>
 
         {/**
