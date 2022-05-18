@@ -81,6 +81,7 @@ export default function App() {
         console.log("Mined --", waveTxn.hash);
 
         getTotalWaves();
+        getAllWaves();
       } else {
         console.log("Ethereum object does not exist!");
       }
@@ -144,6 +145,7 @@ export default function App() {
   useEffect(() => {
     checkIfWalletIsConnected();
     getTotalWaves();
+    getAllWaves()
   }, []);
 
   return (
