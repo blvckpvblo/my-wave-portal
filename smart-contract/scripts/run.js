@@ -16,6 +16,9 @@ const main = async () => {
     let waveTxn = await waveContract.wave('A message!');
     await waveTxn.wait();
 
+    let waveTxn2 = await waveContract.wave('A message!');
+    await waveTxn2.wait();
+
     /**
      * Get contract balance to see what happened!
      */
