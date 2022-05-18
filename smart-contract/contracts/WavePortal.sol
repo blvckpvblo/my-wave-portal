@@ -6,16 +6,34 @@ import "hardhat/console.sol";
 
 contract WavePortal {
     uint256 totalWaves;
-    mapping(address => uint256) public addresses;
+    mapping(address => uint256) public addresses;       // address book of the contract
+    event NewWave(address indexed from, uint256 timestamp, string message);
 
-    constructor() {
-        console.log("WavePortal constructor called.");
+    struct Wave {
+        address waver;      // address of user who waved
+        string message;     // the message of the user
+        uint256 timestamp;  // the timestamp when the user waved
     }
 
-    function wave() public {
-        totalWaves += 1;
-        addresses[msg.sender] += 1;
-        console.log("%s has waved!", msg.sender);
+    Wave[] waves;       // array of the all waves
+
+    constructor() {
+        console.log("WavePortal CONSTRUCTOR CALLED.");
+    }
+
+    function wave(string memory _message) public {
+        totalWaves += 1;                // increment totalWaves
+        addresses[msg.sender] += 1;     // add users to address book
+        console.log("%s waved w/ message %s", msg.sender, _message);
+        waves.push(Wave(msg.sender, _message, block.timestamp));        // add message to array of waves
+        emit NewWave(msg.sender, block.timestamp, _message);            // emit Wave
+    }
+
+    /**
+     * Get all the waves stored by the contract
+     */
+    function getAllWaves() public view returns (Wave[] memory) {
+        return waves;
     }
 
     function getTotalWaves() public view returns (uint256) {
@@ -24,8 +42,8 @@ contract WavePortal {
     }
 
     function getSenderTotalWaves(address sender) public view returns (uint256) {
-        uint256 waves = addresses[sender];
-        console.log("%s has waved %d at you.", sender, waves);
-        return waves;
+        uint256 userWaves = addresses[sender];
+        console.log("%s has waved %d at you.", sender, userWaves);
+        return userWaves;
     }
 }
