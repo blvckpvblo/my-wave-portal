@@ -27,8 +27,39 @@
 .waveButton {
   cursor: pointer;
   margin-top: 16px;
-  padding: 8px;
+  padding: 16px 8px;
   border: 0;
   border-radius: 5px;
-  
+  width: 200px;
+  align-self: center;
+  transition: background 0.5s ease-in-out;
+}
+
+.waveButton:hover {
+  background-color: OldLace;
+}
+
+.message {
+  width: calc(100% - 32px);
+  background-color: OldLace;
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 4px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+textarea {
+  display: block;
+  width: calc(100% - 16px);
+  height: 150px;
+  resize: none;
+  outline: none;
+  border: 1px solid #222022;
+  border-radius: 4px;
+  padding: 8px;
 }

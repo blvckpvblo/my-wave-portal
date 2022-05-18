@@ -11,6 +11,7 @@ export default function App() {
   const [isMining, setIsMining] = useState(false);
   const [totalWavesCount, setTotalWavesCount] = useState(0);  // State variable to store total waves
   const [allWaves, setAllWaves] = useState([]);
+  const [message, setMessage] = useState('');
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -72,7 +73,7 @@ export default function App() {
         /**
          * Execute wave function in the contract
          */
-        const waveTxn = await wavePortalContract.wave("This is a message");
+        const waveTxn = await wavePortalContract.wave(message);
         setIsMining(true);
         console.log("Mining...", waveTxn.hash);
 
@@ -139,6 +140,15 @@ export default function App() {
     }
   };
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    wave();
+  }
+
+  function handleChange(event) {
+    setMessage(event.target.value);
+  }
+
   /**
    * Runs when the page loads
    */
@@ -157,17 +167,21 @@ export default function App() {
         </div>
 
         <div className="bio">
-          I am "𝓜𝓸𝓶𝓪𝓻 🌈☀️" and I am a techno-industrialist. Connect your Ethereum wallet and wave at me!
+          I am "𝓜𝓸𝓶𝓪𝓻 🌈☀️" and I am a techno-industrialist. Connect your Ethereum wallet and wave at me by sending me book recommendations!
         </div>
 
-        <h1 style={{textAlign: 'center'}}>
+        <h1 style={{ textAlign: 'center' }}>
           # of Waves: {totalWavesCount}
         </h1>
 
-        <button className="waveButton" onClick={wave}>
-          {!isMining && (<span>Wave at Me</span>)}
-          {isMining && (<span>Mining...</span>)}
-        </button>
+        <form onSubmit={handleSubmit}>
+          <textarea placeholder="Enter your book recommendations." value={message} onChange={handleChange}></textarea>
+
+          <button className="waveButton">
+            {!isMining && (<span>Wave at Me</span>)}
+            {isMining && (<span>Mining...</span>)}
+          </button>
+        </form>
 
         {/**
         * If there is no currentAccount render this button
@@ -180,7 +194,7 @@ export default function App() {
 
         {allWaves.map((wave, index) => {
           return (
-            <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
+            <div key={index} className="message">
               <div>Address: {wave.address}</div>
               <div>Time: {wave.timestamp}</div>
               <div>Message: {wave.message}</div>
