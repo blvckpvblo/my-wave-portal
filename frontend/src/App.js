@@ -126,7 +126,7 @@ export default function App() {
         waves.forEach(wave => {
           wavesCleaned.push({
             address: wave.waver,
-            timestamp: wave.timestamp.toString(),
+            timestamp: new Date(wave.timestamp * 1000),
             message: wave.message
           });
         });
@@ -155,6 +155,7 @@ export default function App() {
   useEffect(() => {
     checkIfWalletIsConnected();
     getTotalWaves();
+    getAllWaves();
 
     /**
      * Listen to NewWave events
@@ -226,7 +227,7 @@ export default function App() {
           return (
             <div key={index} className="message">
               <div>Address: {wave.address}</div>
-              <div>Time: {wave.timestamp}</div>
+              <div>Time: {wave.timestamp.toLocaleString('en-GB', { timeZone: 'UTC' })}</div>
               <div>Message: {wave.message}</div>
             </div>
           );
