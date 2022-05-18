@@ -172,6 +172,7 @@ export default function App() {
           message: message,
         },
       ]);
+      getTotalWaves();
     };
 
     if (window.ethereum) {
