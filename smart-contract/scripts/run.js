@@ -16,6 +16,12 @@ const main = async () => {
     let waveTxn = await waveContract.wave('A message!');
     await waveTxn.wait();
 
+    console.log("waiting 30s");
+
+    sleep(31000);
+
+    console.log("30s wait over");
+
     let waveTxn2 = await waveContract.wave('A message!');
     await waveTxn2.wait();
 
@@ -38,5 +44,13 @@ const runMain = async () => {
         process.exit(1);    // Exit Node process while indicating 'Uncaught Fatal Exception' error
     }
 };
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
 
 runMain();
